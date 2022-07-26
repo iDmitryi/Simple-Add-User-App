@@ -7,17 +7,30 @@ import { Button } from "antd";
 
 import "./InputForm.css";
 
-const InputForm = () => {
+const InputForm = (props) => {
   const [inputUsername, setInputUsername] = useState("");
-  const [inputAge, setInputAge] = useState("");
+  const [isValid, setIsValid] = useState(true);
+
+  // const [inputAge, setInputAge] = useState("");
 
   const onChangeUsernameInput = (enteredText) => {
+    if (enteredText.trim().length > 0) {
+      setIsValid(true);
+    }
     setInputUsername(enteredText);
   };
 
+  // TODO: check validations
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log("submitted", inputUsername);
+    if (inputUsername.trim().length === 0) {
+      setIsValid(false);
+      return;
+    }
+    props.onAddUser(inputUsername);
+    setInputUsername("");
+    setIsValid(false);
+    e.target.reset();
   };
 
   return (
@@ -28,7 +41,7 @@ const InputForm = () => {
         onChangeUsernameInput={onChangeUsernameInput}
       />
       {/* <Input label="Age" type="number" onChangeAgeInput={onChangeAgeInput} /> */}
-      <Button type="primary" htmlType="submit" size="large">
+      <Button type="primary" htmlType="submit" disabled={!isValid} size="large">
         Add User
       </Button>
     </form>
