@@ -1,9 +1,12 @@
-import { useState } from "react";
-
-import { Table, Space, Button } from "antd";
+import { Table } from "antd";
+import ButtonAnt from "./Button";
 const { Column } = Table;
 
 const UserList = (props) => {
+  const onDeleteHandler = (record) => {
+    props.deleteUser(record);
+  };
+
   return (
     <Table dataSource={props.newUser} pagination={false}>
       <Column title="Username" dataIndex="username" key="username" />
@@ -13,9 +16,13 @@ const UserList = (props) => {
         key="action"
         align="center"
         render={(_, record) => (
-          <Button type="danger" onClick={props.deleteUser}>
+          <ButtonAnt
+            type="danger"
+            record={record.key}
+            onClick={onDeleteHandler}
+          >
             Delete
-          </Button>
+          </ButtonAnt>
         )}
       />
     </Table>

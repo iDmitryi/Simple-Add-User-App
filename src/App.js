@@ -19,20 +19,15 @@ function App() {
         username: e,
         age: 24,
       });
-      console.log(updatedUsers);
       return updatedUsers;
     });
   };
 
-  const onDeleteHandler = (userKey, event) => {
-    // event.preventDefault();
-    // console.log(userKey, event);
-    console.log("ss", userKey.record);
+  const onDeleteHandler = (userKey) => {
     setInputUsernames((prevUsers) => {
-      const updatedUsers = prevUsers.filter((user) => user.key !== userKey);
-
-      console.log("DeleteHandler entered", updatedUsers.userKey);
-      console.log("userKey", userKey);
+      const updatedUsers = prevUsers.filter(
+        (user) => user.key !== userKey.record
+      );
       return updatedUsers;
     });
   };
