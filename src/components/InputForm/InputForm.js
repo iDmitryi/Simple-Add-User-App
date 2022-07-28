@@ -1,45 +1,46 @@
-import { useState, useCallback } from "react";
-
-import Form from "./Form";
+import { useState } from "react";
 import Input from "./Input";
-
-import { Button } from "antd";
+import ButtonWrapper from "../Button/ButtonWrapper";
+import { Modal } from "antd";
 
 import "./InputForm.css";
 
 const InputForm = (props) => {
   const [inputUsername, setInputUsername] = useState("");
   const [inputAge, setInputAge] = useState("");
-  const [isValid, setIsValid] = useState(true);
 
-  // const [inputAge, setInputAge] = useState("");
-
-  const onChangeUsernameInput = (enteredText) => {
-    if (enteredText.trim().length > 0) {
-      setIsValid(true);
-    }
-    setInputUsername(enteredText);
+  const warningAge = () => {
+    Modal.warning({
+      title: "Can't add user",
+      content: "Please input your Age",
+    });
   };
 
-  const onChangeAgeInput = (enteredText) => {
-    if (enteredText.trim().length > 0) {
-      setIsValid(true);
-    }
-    setInputAge(enteredText);
+  const warningUsername = () => {
+    Modal.warning({
+      title: "Can't add user",
+      content: "Please input your Username",
+    });
   };
 
-  // TODO: check validations
   const onSubmitHandler = (e) => {
     e.preventDefault();
+
+    // validations
     if (inputUsername.trim().length === 0) {
-      setIsValid(false);
+      warningUsername();
+      return;
+    } else if (inputAge.length === 0) {
+      warningAge();
       return;
     }
 
-    // TODO: pass props for AGE INPUT to the parent
-    props.onAddUser(inputUsername);
+    // pass props to parent
+    props.onAddUser(inputUsername, inputAge);
+
+    // reset states and input values
     setInputUsername("");
-    setIsValid(false);
+    setInputAge("");
     e.target.reset();
   };
 
@@ -48,16 +49,18 @@ const InputForm = (props) => {
       <Input
         label="Username"
         type="text"
-        onChangeUsernameInput={onChangeUsernameInput}
+        onChangeInput={(inputValue) => setInputUsername(inputValue)}
       />
       <Input
         label="Age"
         type="number"
-        onChangeUsernameInput={onChangeAgeInput}
+        min={0}
+        max={100}
+        onChangeInput={(inputValue) => setInputAge(inputValue)}
       />
-      <Button type="primary" htmlType="submit" disabled={!isValid} size="large">
+      <ButtonWrapper type="primary" htmlType="submit" size="large">
         Add User
-      </Button>
+      </ButtonWrapper>
     </form>
   );
 };

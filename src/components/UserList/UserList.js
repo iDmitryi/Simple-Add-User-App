@@ -1,14 +1,16 @@
 import { Table } from "antd";
-import ButtonAnt from "./Button";
+import ButtonWrapper from "../Button/ButtonWrapper";
+
 const { Column } = Table;
 
 const UserList = (props) => {
   const onDeleteHandler = (record) => {
+    // pass key to parent
     props.deleteUser(record);
   };
 
   return (
-    <Table dataSource={props.newUser} pagination={false}>
+    <Table dataSource={props.newUser} pagination={{ pageSize: 7 }}>
       <Column title="Username" dataIndex="username" key="username" />
       <Column title="Age" dataIndex="age" key="age" />
       <Column
@@ -16,13 +18,13 @@ const UserList = (props) => {
         key="action"
         align="center"
         render={(_, record) => (
-          <ButtonAnt
+          <ButtonWrapper
             type="danger"
             record={record.key}
             onClick={onDeleteHandler}
           >
             Delete
-          </ButtonAnt>
+          </ButtonWrapper>
         )}
       />
     </Table>

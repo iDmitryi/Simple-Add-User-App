@@ -1,29 +1,29 @@
 import { useState } from "react";
-
 import InputForm from "./components/InputForm/InputForm";
-import WarningModal from "./components/WarningModal/WarningModal";
+import UserList from "./components/UserList/UserList";
 
 import "./App.css";
-import UserList from "./components/UserList/UserList";
 
 function App() {
   const [inputUsernames, setInputUsernames] = useState([]);
 
   const isVisible = inputUsernames.length === 0 ? false : true;
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = (username, age) => {
     setInputUsernames((prevUsers) => {
       const updatedUsers = [...prevUsers];
+      // return an updated array with last added user at the beginning
       updatedUsers.unshift({
         key: (Math.random() * 1000).toString(16),
-        username: e,
-        age: 24,
+        username: username,
+        age: age,
       });
       return updatedUsers;
     });
   };
 
   const onDeleteHandler = (userKey) => {
+    // return an updated array without user which have (userKey) key
     setInputUsernames((prevUsers) => {
       const updatedUsers = prevUsers.filter(
         (user) => user.key !== userKey.record
@@ -40,8 +40,6 @@ function App() {
       {isVisible && (
         <UserList newUser={inputUsernames} deleteUser={onDeleteHandler} />
       )}
-
-      {/* <WarningModal /> */}
     </div>
   );
 }
